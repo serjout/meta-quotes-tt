@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <style>
     .chart {
-      background-color: thistle;
       width: 100vw;
       height: 100vh;
     }
@@ -18,6 +17,29 @@
 
   <script src="./index.js" type="module"></script>
   <script src="./debug.js" type="module"></script>
+  
+  <script src="/src/worker/storage.js"></script>
+  <script src="/src/worker/the-api.js"></script>
+  <script src="/src/worker/manager.js"></script>
+
+  <script>
+    (async () => {
+
+    const storage = new MyStorage({ dbName: 'weather' });
+    const api = theWeatherApi;
+    const manager = new WeatherManager({ storage, api });
+
+
+    const a = await manager.getPrecipitation('1990-01', '1999-01');
+
+    const ys = a.map(x => x.v);
+
+    const cmp = document.querySelector('.chart');
+
+    cmp.setRenderData(ys);
+
+    })()
+  </script>
 
 </body>
 </html>
